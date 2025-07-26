@@ -1111,72 +1111,38 @@
         });
     </script>
 
-<!-- Netlify Identity Widget Script -->
+<!-- Netlify Identity Final Solution -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
+  // Only run on your specific domain
+  if (window.location.hostname === 'dapper-kitten-079eb9.netlify.app') {
+    // Handle both invite and confirmation tokens
+    const tokenTypes = ['invite_token', 'confirmation_token', 'recovery_token'];
+    const hasToken = tokenTypes.some(token => window.location.hash.includes(token));
+    
+    if (window.netlifyIdentity && hasToken) {
+      // Initialize and automatically open signup
+      netlifyIdentity.on('init', user => {
+        if (!user) {
+          netlifyIdentity.open();
+          netlifyIdentity.on('login', () => {
+            // Clean URL after successful login
+            history.replaceState({}, '', '/admin/');
+            window.location.reload();
+          });
+        }
+      });
+      netlifyIdentity.init();
+    }
+    
+    // Regular admin redirect handler
+    netlifyIdentity.on('init', user => {
       if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
+        netlifyIdentity.on('login', () => {
+          window.location.assign('/admin/');
         });
       }
     });
-  }
-  
-  // Handle the email confirmation callback
-  document.addEventListener('DOMContentLoaded', function() {
-    if (window.location.hash.includes('confirmation_token')) {
-      window.netlifyIdentity.on('init', function(user) {
-        if (!user) {
-          window.netlifyIdentity.on('login', function() {
-            document.location.href = '/admin/';
-          });
-        }
-      });
-      window.netlifyIdentity.init();
-    }
-  });
-</script>
-
-    <!-- Netlify Identity Handler -->
-<script>
-  // Handle the invite acceptance redirect
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user && window.location.hash.includes('invite_token')) {
-        window.netlifyIdentity.on("login", () => {
-          // Redirect to admin after successful login
-          window.location.href = "/admin/";
-        });
-      }
-    });
-    window.netlifyIdentity.init();
-  }
-</script>
-
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-  // Handle invite acceptance
-  if (window.netlifyIdentity) {
-    // Check for invite token in URL
-    if (window.location.hash.includes('invite_token')) {
-      // Initialize Identity
-      window.netlifyIdentity.init();
-      
-      // When Identity is ready
-      window.netlifyIdentity.on('init', user => {
-        if (!user) {
-          // Automatically open the signup modal
-          window.netlifyIdentity.open('signup');
-          
-          // Handle successful signup
-          window.netlifyIdentity.on('login', () => {
-            // Redirect to admin after successful login
-            window.location.href = '/admin/';
-          });
-        }
-      });
-    }
   }
 </script>
 </body>
