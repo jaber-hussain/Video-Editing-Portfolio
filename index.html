@@ -1153,5 +1153,31 @@
     window.netlifyIdentity.init();
   }
 </script>
+
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  // Handle invite acceptance
+  if (window.netlifyIdentity) {
+    // Check for invite token in URL
+    if (window.location.hash.includes('invite_token')) {
+      // Initialize Identity
+      window.netlifyIdentity.init();
+      
+      // When Identity is ready
+      window.netlifyIdentity.on('init', user => {
+        if (!user) {
+          // Automatically open the signup modal
+          window.netlifyIdentity.open('signup');
+          
+          // Handle successful signup
+          window.netlifyIdentity.on('login', () => {
+            // Redirect to admin after successful login
+            window.location.href = '/admin/';
+          });
+        }
+      });
+    }
+  }
+</script>
 </body>
 </html>
