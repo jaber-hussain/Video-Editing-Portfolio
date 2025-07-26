@@ -8,6 +8,24 @@
 </head>
 <body>
   <div id="nc-root"></div>
-  <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+  
+  <script>
+    // Handle invite acceptance in admin
+    if (window.location.hash.includes('invite_token') || 
+        window.location.hash.includes('confirmation_token')) {
+      window.netlifyIdentity.on('init', user => {
+        if (!user) {
+          window.netlifyIdentity.on('login', () => {
+            window.location.href = '/admin/';
+          });
+        }
+      });
+    }
+    
+    // Load CMS
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js';
+    document.body.appendChild(script);
+  </script>
 </body>
 </html>
