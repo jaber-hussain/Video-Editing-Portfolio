@@ -1,0 +1,28 @@
+[build]
+  publish = "/"  # Root directory where index.html is located
+  command = ""   # No build command needed for static site
+
+# Required for Single Page Application routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Critical Identity redirects - must use your exact site name
+[[redirects]]
+  from = "/.netlify/identity"
+  to = "https://dapper-kitten-079eb9.netlify.app/.netlify/identity"
+  status = 200
+
+[[redirects]]
+  from = "/.netlify/identity/*"
+  to = "https://dapper-kitten-079eb9.netlify.app/.netlify/identity/:splat"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"  # Applies to all paths
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Content-Security-Policy = "default-src 'self' https://identity.netlify.com https://unpkg.com; script-src 'self' https://identity.netlify.com https://unpkg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
