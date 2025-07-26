@@ -10,22 +10,24 @@
   <div id="nc-root"></div>
   
   <script>
-    // Handle invite acceptance in admin
-    if (window.location.hash.includes('invite_token') || 
-        window.location.hash.includes('confirmation_token')) {
+    // Handle invite token in admin panel
+    if (window.location.hash.includes('invite_token')) {
       window.netlifyIdentity.on('init', user => {
         if (!user) {
+          window.netlifyIdentity.open('signup');
           window.netlifyIdentity.on('login', () => {
-            window.location.href = '/admin/';
+            // Remove the token from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
           });
         }
       });
+      window.netlifyIdentity.init();
     }
     
     // Load CMS
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js';
-    document.body.appendChild(script);
+    const cmsScript = document.createElement('script');
+    cmsScript.src = 'https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js';
+    document.body.appendChild(cmsScript);
   </script>
 </body>
 </html>
