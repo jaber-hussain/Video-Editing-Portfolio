@@ -8,22 +8,6 @@
 </head>
 <body>
   <div id="nc-root"></div>
-  
-  <script>
-    // Handle confirmation tokens in admin
-    if (window.location.hash.includes('confirmation_token')) {
-      window.netlifyIdentity.on('init', function(user) {
-        netlifyIdentity.close();
-      });
-      window.netlifyIdentity.init();
-    }
-    
-    // Load CMS after handling identity
-    document.addEventListener('DOMContentLoaded', function() {
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js';
-      document.body.appendChild(script);
-    });
-  </script>
+  <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
 </body>
 </html>
