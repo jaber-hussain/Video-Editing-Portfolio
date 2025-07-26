@@ -1137,5 +1137,21 @@
     }
   });
 </script>
+
+    <!-- Netlify Identity Handler -->
+<script>
+  // Handle the invite acceptance redirect
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user && window.location.hash.includes('invite_token')) {
+        window.netlifyIdentity.on("login", () => {
+          // Redirect to admin after successful login
+          window.location.href = "/admin/";
+        });
+      }
+    });
+    window.netlifyIdentity.init();
+  }
+</script>
 </body>
 </html>
