@@ -26,3 +26,13 @@
   from = "/confirm-invite/*"
   to = "/#confirmation_token=:splat"
   status = 301
+
+[[redirects]]
+  from = "/.netlify/identity/*"
+  to = "https://dapper-kitten-079eb9.netlify.app/.netlify/identity/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/accept"
+  to = "/#invite_token=:splat"
+  status = 301
