@@ -1111,38 +1111,15 @@
         });
     </script>
 
-<!-- Netlify Identity Final Solution -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>
-  // Only run on your specific domain
-  if (window.location.hostname === 'dapper-kitten-079eb9.netlify.app') {
-    // Handle both invite and confirmation tokens
-    const tokenTypes = ['invite_token', 'confirmation_token', 'recovery_token'];
-    const hasToken = tokenTypes.some(token => window.location.hash.includes(token));
-    
-    if (window.netlifyIdentity && hasToken) {
-      // Initialize and automatically open signup
-      netlifyIdentity.on('init', user => {
-        if (!user) {
-          netlifyIdentity.open();
-          netlifyIdentity.on('login', () => {
-            // Clean URL after successful login
-            history.replaceState({}, '', '/admin/');
-            window.location.reload();
-          });
-        }
-      });
-      netlifyIdentity.init();
-    }
-    
-    // Regular admin redirect handler
+  if (window.netlifyIdentity) {
     netlifyIdentity.on('init', user => {
-      if (!user) {
-        netlifyIdentity.on('login', () => {
-          window.location.assign('/admin/');
-        });
+      if (!user && window.location.hash.includes('invite_token')) {
+        netlifyIdentity.open('signup');
       }
     });
+    netlifyIdentity.init();
   }
 </script>
 </body>
