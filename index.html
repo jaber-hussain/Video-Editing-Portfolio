@@ -1111,7 +1111,7 @@
         });
     </script>
 
-    <!-- Netlify Identity Redirect -->
+<!-- Netlify Identity Widget Script -->
 <script>
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", user => {
@@ -1122,6 +1122,20 @@
       }
     });
   }
+  
+  // Handle the email confirmation callback
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.hash.includes('confirmation_token')) {
+      window.netlifyIdentity.on('init', function(user) {
+        if (!user) {
+          window.netlifyIdentity.on('login', function() {
+            document.location.href = '/admin/';
+          });
+        }
+      });
+      window.netlifyIdentity.init();
+    }
+  });
 </script>
 </body>
 </html>
